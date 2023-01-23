@@ -95,7 +95,10 @@ void WaveshareEPaper::setup_pins_() {
   }
   this->spi_setup();
 
-  this->reset_();
+  if (this->allow_deep_sleep) {
+    // if we don't allow deep sleep, display shouldn't be reset on wake-up either
+    this->reset_();
+  }
 }
 float WaveshareEPaper::get_setup_priority() const { return setup_priority::PROCESSOR; }
 void WaveshareEPaper::command(uint8_t value) {
@@ -157,7 +160,11 @@ void WaveshareEPaper::start_data_() {
   this->enable();
 }
 void WaveshareEPaper::end_data_() { this->disable(); }
-void WaveshareEPaper::on_safe_shutdown() { this->deep_sleep(); }
+void WaveshareEPaper::on_safe_shutdown() { 
+  if (this->allow_deep_sleep) {
+    this->deep_sleep(); 
+  }
+}
 
 // ========================================================
 //                          Type A

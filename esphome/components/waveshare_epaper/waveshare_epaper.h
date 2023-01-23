@@ -37,6 +37,7 @@ class WaveshareEPaper : public PollingComponent,
   void on_safe_shutdown() override;
 
   display::DisplayType get_display_type() override { return display::DisplayType::DISPLAY_TYPE_BINARY; }
+  void set_allow_deep_sleep(bool allow_deep_sleep) {this->allow_deep_sleep = allow_deep_sleep;};
 
  protected:
   void draw_absolute_pixel_internal(int x, int y, Color color) override;
@@ -56,6 +57,7 @@ class WaveshareEPaper : public PollingComponent,
 
   uint32_t get_buffer_length_();
   uint32_t reset_duration_{200};
+  bool allow_deep_sleep{true};
 
   void start_command_();
   void end_command_();
