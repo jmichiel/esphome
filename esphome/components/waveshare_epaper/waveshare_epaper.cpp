@@ -97,7 +97,10 @@ void WaveshareEPaper::setup_pins_() {
 
   if (this->allow_deep_sleep) {
     // if we don't allow deep sleep, display shouldn't be reset on wake-up either
+    ESP_LOGI(TAG, "Resetting since deep_sleep is allowed!");
     this->reset_();
+  } else {
+        ESP_LOGI(TAG, "NO Reset since deep_sleep is NOT allowed!");
   }
 }
 float WaveshareEPaper::get_setup_priority() const { return setup_priority::PROCESSOR; }
@@ -1506,7 +1509,7 @@ void HOT WaveshareEPaper2P13InDKE::display() {
   this->at_update_ = (this->at_update_ + 1) % this->full_update_every_;
 
   if (partial) {
-    ESP_LOGI(TAG, "Performing partial e-paper update.");
+    ESP_LOGI(TAG, "Performing partial e-paper update. (this->at_update_ = %i)", this->at_update_);
   } else {
     ESP_LOGI(TAG, "Performing full e-paper update.");
   }
