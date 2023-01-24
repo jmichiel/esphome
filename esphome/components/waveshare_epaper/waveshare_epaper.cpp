@@ -1493,10 +1493,19 @@ static const uint8_t PART_UPDATE_LUT_TTGO_DKE[LUT_SIZE_TTGO_DKE_PART] = {
     // 0x22,   0x17,   0x41,   0x0,    0x32,   0x32
 };
 
+void WaveshareEPaper2P13InDKE::setup() {
+  this->rtc_ = global_preferences->make_preference<int32_t>(2023012412UL);
+  if (!this->rtc_.load(&this->at_update_)) {
+    this->at_update_ = 0;
+  }
+  WaveshareEPaper::setup();
+}
+
 void WaveshareEPaper2P13InDKE::initialize() {}
 void HOT WaveshareEPaper2P13InDKE::display() {
   bool partial = this->at_update_ != 0;
   this->at_update_ = (this->at_update_ + 1) % this->full_update_every_;
+  this->rtc_.save(&this->at_update_);
 
   if (partial) {
     ESP_LOGI(TAG, "Performing partial e-paper update. (this->at_update_ = %i)", this->at_update_);

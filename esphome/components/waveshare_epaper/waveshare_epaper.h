@@ -393,6 +393,7 @@ class WaveshareEPaper7P5InHDB : public WaveshareEPaper {
 
 class WaveshareEPaper2P13InDKE : public WaveshareEPaper {
  public:
+  void setup() override;
   void initialize() override;
 
   void display() override;
@@ -417,6 +418,7 @@ class WaveshareEPaper2P13InDKE : public WaveshareEPaper {
 
   uint32_t full_update_every_{30};
   uint32_t at_update_{0};
+  ESPPreferenceObject rtc_;
 };
 
 }  // namespace waveshare_epaper
