@@ -408,6 +408,7 @@ class WaveshareEPaper2P13InDKE : public WaveshareEPaper {
   }
 
   void set_full_update_every(uint32_t full_update_every);
+  void set_retain_after_deep_sleep(bool retain);
 
  protected:
   int get_width_internal() override;
@@ -418,6 +419,8 @@ class WaveshareEPaper2P13InDKE : public WaveshareEPaper {
 
   uint32_t full_update_every_{30};
   uint32_t at_update_{0};
+  bool initial_{true};
+  bool retain_{false};
   ESPPreferenceObject rtc_;
 };
 

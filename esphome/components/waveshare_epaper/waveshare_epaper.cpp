@@ -1494,18 +1494,29 @@ static const uint8_t PART_UPDATE_LUT_TTGO_DKE[LUT_SIZE_TTGO_DKE_PART] = {
 };
 
 void WaveshareEPaper2P13InDKE::setup() {
-  this->rtc_ = global_preferences->make_preference<int32_t>(2023012412UL);
-  if (!this->rtc_.load(&this->at_update_)) {
-    this->at_update_ = 0;
+  if (this->retain_) {
+    this->rtc_ = global_preferences->make_preference<int32_t>(2023012412UL);
+    if (!this->rtc_.load(&this->at_update_)) {
+      this->at_update_ = 0;
+    }
   }
   WaveshareEPaper::setup();
 }
 
+
 void WaveshareEPaper2P13InDKE::initialize() {}
 void HOT WaveshareEPaper2P13InDKE::display() {
+  if (this->initial_ && this->retain_) {
+    //first update is to prime the buffer
+    return;
+  }
+  this->initial_ = false;
+
   bool partial = this->at_update_ != 0;
   this->at_update_ = (this->at_update_ + 1) % this->full_update_every_;
-  this->rtc_.save(&this->at_update_);
+  if (this->retain_) {
+    this->rtc_.save(&this->at_update_);
+  }
 
   if (partial) {
     ESP_LOGI(TAG, "Performing partial e-paper update. (this->at_update_ = %i)", this->at_update_);
@@ -1617,6 +1628,10 @@ void WaveshareEPaper2P13InDKE::dump_config() {
 
 void WaveshareEPaper2P13InDKE::set_full_update_every(uint32_t full_update_every) {
   this->full_update_every_ = full_update_every;
+}
+
+void WaveshareEPaper2P13InDKE::set_retain_after_deep_sleep(bool retain) {
+  this->retain_ = retain;
 }
 
 }  // namespace waveshare_epaper

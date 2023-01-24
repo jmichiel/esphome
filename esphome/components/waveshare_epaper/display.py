@@ -88,6 +88,9 @@ MODELS = {
 }
 
 
+CONF_RETAIN_STATE_AFTER_DEEP_SLEEP = "retain_state_after_deep_sleep"
+
+
 def validate_full_update_every_only_types_ac(value):
     if CONF_FULL_UPDATE_EVERY not in value:
         return value
@@ -98,6 +101,21 @@ def validate_full_update_every_only_types_ac(value):
                 full_models.append(key)
         raise cv.Invalid(
             "The 'full_update_every' option is only available for models "
+            + ", ".join(full_models)
+        )
+    return value
+
+
+def validate_retain_only_types_c(value):
+    if CONF_RETAIN_STATE_AFTER_DEEP_SLEEP not in value:
+        return value
+    if MODELS[value[CONF_MODEL]][0] != "c":
+        full_models = []
+        for key, val in sorted(MODELS.items()):
+            if val[0] != "b":
+                full_models.append(key)
+        raise cv.Invalid(
+            "The 'retain_state_after_deep_sleep' option is only available for models "
             + ", ".join(full_models)
         )
     return value
@@ -116,6 +134,7 @@ CONFIG_SCHEMA = cv.All(
                 cv.positive_time_period_milliseconds,
                 cv.Range(max=core.TimePeriod(milliseconds=500)),
             ),
+            cv.Optional(CONF_RETAIN_STATE_AFTER_DEEP_SLEEP, False): cv.boolean,
         }
     )
     .extend(cv.polling_component_schema("1s"))
@@ -158,3 +177,7 @@ async def to_code(config):
         cg.add(var.set_full_update_every(config[CONF_FULL_UPDATE_EVERY]))
     if CONF_RESET_DURATION in config:
         cg.add(var.set_reset_duration(config[CONF_RESET_DURATION]))
+    if CONF_RETAIN_STATE_AFTER_DEEP_SLEEP in config:
+        cg.add(
+            var.set_retain_after_deep_sleep(config[CONF_RETAIN_STATE_AFTER_DEEP_SLEEP])
+        )
