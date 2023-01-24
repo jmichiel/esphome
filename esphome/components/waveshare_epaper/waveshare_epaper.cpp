@@ -1508,9 +1508,9 @@ void WaveshareEPaper2P13InDKE::initialize() {}
 void HOT WaveshareEPaper2P13InDKE::display() {
   if (this->initial_ && this->retain_) {
     //first update is to prime the buffer
+    this->initial_ = false;
     return;
   }
-  this->initial_ = false;
 
   bool partial = this->at_update_ != 0;
   this->at_update_ = (this->at_update_ + 1) % this->full_update_every_;
