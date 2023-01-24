@@ -87,8 +87,6 @@ MODELS = {
     "2.13in-ttgo-dke": ("c", WaveshareEPaper2P13InDKE),
 }
 
-CONF_ALLOW_DEEP_SLEEP = "allow_deep_sleep"
-
 
 def validate_full_update_every_only_types_ac(value):
     if CONF_FULL_UPDATE_EVERY not in value:
@@ -118,7 +116,6 @@ CONFIG_SCHEMA = cv.All(
                 cv.positive_time_period_milliseconds,
                 cv.Range(max=core.TimePeriod(milliseconds=500)),
             ),
-            cv.Optional(CONF_ALLOW_DEEP_SLEEP, True) :cv.boolean,
         }
     )
     .extend(cv.polling_component_schema("1s"))
