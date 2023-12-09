@@ -155,7 +155,7 @@ class GDEY029T94 : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND DEEP SLEEP
@@ -173,7 +173,7 @@ class GDEW0154M09 : public WaveshareEPaper {
  public:
   void initialize() override;
   void display() override;
-  void dump_config() override;
+  void dump_config();
   void deep_sleep() override;
 
  protected:
@@ -329,7 +329,7 @@ class WaveshareEPaper5P8InV2 : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND VCOM AND DATA INTERVAL SETTING
@@ -420,7 +420,7 @@ class WaveshareEPaper7P5InBV3 : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     this->command(0x02);  // Power off
@@ -541,7 +541,7 @@ class WaveshareEPaper7P5InHDB : public WaveshareEPaper {
 
 class WaveshareEPaper2P13InDKE : public WaveshareEPaper {
  public:
-  void setup() override;
+  void setup();
   void initialize() override;
 
   void display() override;
