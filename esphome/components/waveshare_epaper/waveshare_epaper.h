@@ -13,7 +13,7 @@ class WaveshareEPaper : public PollingComponent,
                                               spi::CLOCK_PHASE_LEADING, spi::DATA_RATE_2MHZ> {
  public:
   void set_dc_pin(GPIOPin *dc_pin) { dc_pin_ = dc_pin; }
-  float get_setup_priority() const override;
+  float get_setup_priority() const;
   void set_reset_pin(GPIOPin *reset) { this->reset_pin_ = reset; }
   void set_busy_pin(GPIOPin *busy) { this->busy_pin_ = busy; }
   void set_reset_duration(uint32_t reset_duration) { this->reset_duration_ = reset_duration; }
@@ -25,16 +25,16 @@ class WaveshareEPaper : public PollingComponent,
   virtual void initialize() = 0;
   virtual void deep_sleep() = 0;
 
-  void update() override;
+  void update();
 
   void fill(Color color) override;
 
-  void setup() override {
+  void setup() {
     this->setup_pins_();
     this->initialize();
   }
 
-  void on_safe_shutdown() override;
+  void on_safe_shutdown();
 
   display::DisplayType get_display_type() override { return display::DisplayType::DISPLAY_TYPE_BINARY; }
 
@@ -86,7 +86,7 @@ class WaveshareEPaperTypeA : public WaveshareEPaper {
 
   void initialize() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void display() override;
 
@@ -132,7 +132,7 @@ class WaveshareEPaper2P7In : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND DEEP SLEEP
@@ -152,7 +152,7 @@ class WaveshareEPaper2P9InB : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND DEEP SLEEP
@@ -172,7 +172,7 @@ class WaveshareEPaper4P2In : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND VCOM AND DATA INTERVAL SETTING
@@ -215,7 +215,7 @@ class WaveshareEPaper4P2InBV2 : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND VCOM AND DATA INTERVAL SETTING
@@ -243,7 +243,7 @@ class WaveshareEPaper5P8In : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND POWER OFF
@@ -266,7 +266,7 @@ class WaveshareEPaper7P5In : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND POWER OFF
@@ -289,7 +289,7 @@ class WaveshareEPaper7P5InBV2 : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND POWER OFF
@@ -312,7 +312,7 @@ class WaveshareEPaper7P5InBC : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND POWER OFF
@@ -335,7 +335,7 @@ class WaveshareEPaper7P5InV2 : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND POWER OFF
@@ -356,7 +356,7 @@ class WaveshareEPaper7P5InV2alt : public WaveshareEPaper7P5InV2 {
  public:
   bool wait_until_idle_();
   void initialize() override;
-  void dump_config() override;
+  void dump_config();
 
  protected:
   void reset_() {
@@ -377,7 +377,7 @@ class WaveshareEPaper7P5InHDB : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // deep sleep
@@ -398,7 +398,7 @@ class WaveshareEPaper2P13InDKE : public WaveshareEPaper {
 
   void display() override;
 
-  void dump_config() override;
+  void dump_config();
 
   void deep_sleep() override {
     // COMMAND POWER DOWN
